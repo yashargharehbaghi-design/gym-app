@@ -16,7 +16,10 @@ except ImportError:
 # 1. تنظیمات صفحه (باید اولین خط کد باشد)
 # ==========================================
 st.set_page_config(page_title="FitPro Coach 2025", layout="wide", page_icon="💪")
-CSV_FILE = 'users_web_data.csv'
+
+# --- اصلاح مهم برای سرور لیارا ---
+# فایل را در پوشه tmp ذخیره می‌کنیم که اجازه نوشتن دارد
+CSV_FILE = '/tmp/users_web_data.csv'
 
 # تنظیم فونت و استایل راست‌چین برای فارسی
 st.markdown("""
@@ -28,7 +31,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. منطق برنامه (Logic) - همان منطق نسخه دسکتاپ
+# 2. منطق برنامه (Logic)
 # ==========================================
 class BioCalculator:
     @staticmethod
@@ -150,6 +153,7 @@ if btn_process:
                    'Weight': weight, 'Height': height, 'BMI': coach.bmi, 'Age': age}
         df_new = pd.DataFrame([new_row])
         
+        # ذخیره در مسیر امن (/tmp/)
         if os.path.exists(CSV_FILE):
             df_new.to_csv(CSV_FILE, mode='a', header=False, index=False, encoding='utf-8-sig')
         else:
@@ -157,16 +161,22 @@ if btn_process:
             
         with tab3:
             if os.path.exists(CSV_FILE):
-                df = pd.read_csv(CSV_FILE)
-                st.write("آمار کاربران ثبت شده:")
-                
-                fig, ax = plt.subplots(1, 2, figsize=(10, 4))
-                ax[0].hist(df['Age'], bins=5, color='skyblue')
-                ax[0].set_title('توزیع سنی')
-                
-                ax[1].scatter(df['Weight'], df['Height'], c='red', alpha=0.5)
-                ax[1].set_title('پراکندگی قد و وزن')
-                
-                st.pyplot(fig)
+                try:
+                    df = pd.read_csv(CSV_FILE)
+                    if not df.empty:
+                        st.write("آمار کاربران ثبت شده:")
+                        
+                        fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+                        ax[0].hist(df['Age'], bins=5, color='skyblue')
+                        ax[0].set_title('توزیع سنی')
+                        
+                        ax[1].scatter(df['Weight'], df['Height'], c='red', alpha=0.5)
+                        ax[1].set_title('پراکندگی قد و وزن')
+                        
+                        st.pyplot(fig)
+                    else:
+                        st.warning("داده‌ای برای نمایش وجود ندارد.")
+                except Exception as e:
+                    st.error(f"خطا در خواندن فایل: {e}")
     else:
         st.error("سال تولد نامعتبر است.")
