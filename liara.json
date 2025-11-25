@@ -1,8 +1,13 @@
 {
-  "app": "my-fitness-app",
-  "port": 8501,
-  "build": {
-    "location": "iran"
-  },
-  "disks": []
+  "platform": "python",
+  "port": 8000,
+  "args": [
+    "streamlit",
+    "run",
+    "app.py",
+    "--server.port",
+    "8000",
+    "--server.address",
+    "0.0.0.0"
+  ]
 }
