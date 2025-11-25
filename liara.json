@@ -3,12 +3,8 @@
   "app": "my-fitness-app",
   "port": 8000,
   "args": [
-    "streamlit",
-    "run",
-    "app.py",
-    "--server.port=8000",
-    "--server.address=0.0.0.0",
-    "--server.enableCORS=false",
-    "--server.enableXsrfProtection=false"
+    "sh",
+    "-c",
+    "export HOME=/tmp && export MPLCONFIGDIR=/tmp && streamlit run app.py --server.port=8000 --server.address=0.0.0.0 --server.enableCORS=false --server.enableXsrfProtection=false"
   ]
 }
