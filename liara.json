@@ -3,8 +3,7 @@
   "app": "my-fitness-app",
   "port": 8000,
   "args": [
-    "sh",
-    "-c",
-    "streamlit run app.py --server.port=8000 --server.address=0.0.0.0 --browser.gatherUsageStats=false --server.enableCORS=false --server.enableXsrfProtection=false"
+    "python",
+    "runner.py"
   ]
 }
