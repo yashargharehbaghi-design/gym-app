@@ -1,0 +1,8 @@
+{
+  "app": "my-fitness-app",
+  "port": 8501,
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
+}
